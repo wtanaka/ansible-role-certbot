@@ -14,8 +14,6 @@
   register: package_exists_results
   when: backcompat_pkg_mgr == "dnf"
 
-- debug: var=package_exists_results
-
 # Use command since dnf was only added as a module in ansible 1.9.0
 - name: install {{package_names}} with dnf
   command: dnf install -y {{item.1}}

@@ -15,3 +15,17 @@
   - "../vars/default.yml"
 
 - include: install_package_names.yml
+
+# Avoid running this in integration tests, because it requires that
+# a webserver is already alive and can serve files from
+# letsencrypt_webroot
+- name: run certbot
+  sudo: True
+  command: >
+    letsencrypt certonly --non-interactive
+    --email {{letsencrypt_email}}
+    {{letsencrypt_agree_tos}}
+    --webroot
+    -w {{letsencrypt_webroot}}
+    -d {{letsencrypt_domains | join(" -d ")}}
+  when: is_integration_test is not defined or not is_integration_test

@@ -1,1 +1,7 @@
 ---
+letsencrypt_email: example@example.com
+# letsencrypt_agree_tos: --agree-tos
+letsencrypt_webroot: /var/www/html
+letsencrypt_domains:
+  - example.com
+  - www.example.com
