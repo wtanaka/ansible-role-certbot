@@ -72,6 +72,20 @@ Setting this to an empty list will disable executing certbot:
 letsencrypt_domains: []
 ```
 
+### `letsencrypt_reload_webserver_action`
+
+Set this to the service that, when reloaded, will re-read your
+webserver configuration files.
+
+For example:
+
+```
+letsencrypt_reload_service: nginx
+```
+
+The full set of configuration options available are visible in
+[defaults/main.yml](defaults/main.yml)
+
 License
 -------
 

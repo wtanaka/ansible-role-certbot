@@ -8,3 +8,5 @@ letsencrypt_webroot: /var/www/html
 letsencrypt_domains:
   - example.com
   - www.example.com
+# Example:
+# letsencrypt_reload_service: nginx
