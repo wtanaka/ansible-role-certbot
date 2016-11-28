@@ -17,6 +17,9 @@ Example Playbook
            # letsencrypt_agree_tos: --agree-tos
            letsencrypt_email: example@example.com
            letsencrypt_webroot: /var/www/html
+           # Uncomment to renew on every run (by default waits till 30
+           # days till expiration)
+           # letsencrypt_renew_by_default: --renew-by-default
            letsencrypt_domains:
            - wtanaka.com
            - www.wtanaka.com
@@ -35,6 +38,9 @@ Or you can include just the role, and configure it in
     # letsencrypt_agree_tos: --agree-tos
     letsencrypt_email: example@example.com
     letsencrypt_webroot: /var/www/html
+    # Uncomment to renew on every run (by default waits till 30
+    # days till expiration)
+    # letsencrypt_renew_by_default: --renew-by-default
     letsencrypt_domains:
     - wtanaka.com
     - www.wtanaka.com
