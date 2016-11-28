@@ -16,6 +16,9 @@
 # letsencrypt_webroot
 - name: run certbot
   sudo: True
+  register: certonly_result
+  changed_when: >
+    not (certonly_result.stdout == '' and certonly_result.stderr == '')
   command: >
     letsencrypt certonly --non-interactive
     --email {{letsencrypt_email}}
