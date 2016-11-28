@@ -1,0 +1,9 @@
+---
+- name: reload webserver
+  service: name={{letsencrypt_reload_service}} state=reloaded
+  sudo: yes
+  when: >
+    not (is_integration_test is defined and is_integration_test and
+      (ansible_os_family == "RedHat" or ansible_distribution == "CentOS"))
+    and letsencrypt_reload_service is defined and letsencrypt_reload_service
+
