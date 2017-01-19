@@ -45,6 +45,13 @@ Or you can include just the role, and configure it in
     - wtanaka.com
     - www.wtanaka.com
 
+To disable executing certbot, for example in an integration test
+environment, set `letsencrypt_domains` to the empty array, like:
+
+```
+letsencrypt_domains: []
+```
+
 License
 -------
 
