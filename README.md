@@ -52,6 +52,9 @@ environment, set `letsencrypt_domains` to the empty array, like:
 letsencrypt_domains: []
 ```
 
+To install a self-signed key in /etc/letsencrypt/fake-server.{crt,key}
+set the letsencrypt_fake_key variable to true
+
 License
 -------
 

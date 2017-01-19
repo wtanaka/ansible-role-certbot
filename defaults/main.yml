@@ -1,6 +1,7 @@
 ---
 # letsencrypt_agree_tos: --agree-tos
 letsencrypt_email: example@example.com
+# letsencrypt_fake_key: True
 # Uncomment to renew even earlier than 30 days before expiry
 # letsencrypt_renew_by_default: --renew-by-default
 letsencrypt_webroot: /var/www/html
