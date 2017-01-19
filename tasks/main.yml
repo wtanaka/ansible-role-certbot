@@ -11,6 +11,28 @@
 
 - include: install_package_names.yml
 
+- name: create directory
+  sudo: True
+  file: >
+    path=/etc/letsencrypt
+    state=directory
+
+# for use in integration test environments
+- name: copy fake key
+  sudo: True
+  when: letsencrypt_fake_key is defined and letsencrypt_fake_key
+  copy:
+    src: server.crt
+    dest: /etc/letsencrypt/fake-server.crt
+
+# for use in integration test environments
+- name: copy fake key
+  sudo: True
+  when: letsencrypt_fake_key is defined and letsencrypt_fake_key
+  copy:
+    src: server.key
+    dest: /etc/letsencrypt/fake-server.key
+
 # Avoid running this in integration tests, because it requires that
 # a webserver is already alive and can serve files from
 # letsencrypt_webroot
