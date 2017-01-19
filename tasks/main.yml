@@ -26,7 +26,9 @@
     --webroot
     -w {{letsencrypt_webroot}}
     -d {{letsencrypt_domains | join(" -d ")}}
-  when: is_integration_test is not defined or not is_integration_test
+  when: >
+    ((is_integration_test is not defined or not is_integration_test) and
+    letsencrypt_domains)
 
 - name: renew certificates
   sudo: True
@@ -37,3 +39,6 @@
   register: renew_result
   changed_when: >
     'No renewals were attempted' not in renew_result.stdout
+  when: >
+    ((is_integration_test is not defined or not is_integration_test) and
+    letsencrypt_domains)
