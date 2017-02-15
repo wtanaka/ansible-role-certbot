@@ -1,2 +1,4 @@
 ---
 package_names: []
+letsencrypt_binary: letsencrypt
+letsencrypt_use_certbot_auto: False

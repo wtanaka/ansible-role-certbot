@@ -8,7 +8,7 @@ sudo: false
 services:
 - docker
 script:
-- wget -O- bit.ly/ansibletest | env DOCKER_IMAGES="ubuntu:16.04"
+- wget -O- bit.ly/ansibletest | env DOCKER_IMAGES="ubuntu:14.04 ubuntu:16.04"
   ANSIBLE_VERSIONS="1.6.1 1.8.4 2.1.0.0" sh -x
 after_failure:
 - cat role-tester-ansible-master/.kitchen.yml
