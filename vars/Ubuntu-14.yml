@@ -1,0 +1,4 @@
+---
+package_names: []
+letsencrypt_binary: /tmp/certbot-auto
+letsencrypt_use_certbot_auto: True

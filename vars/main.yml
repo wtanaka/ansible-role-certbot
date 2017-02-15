@@ -1,1 +1,3 @@
 ---
+letsencrypt_binary: letsencrypt
+letsencrypt_use_certbot_auto: False

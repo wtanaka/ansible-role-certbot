@@ -1,4 +1,6 @@
 ---
+letsencrypt_binary: letsencrypt
+letsencrypt_use_certbot_auto: False
 package_names:
 - certbot
 - python-certbot-apache

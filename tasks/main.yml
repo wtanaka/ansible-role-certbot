@@ -11,6 +11,18 @@
 
 - include: install_package_names.yml
 
+- name: download certbot-auto
+  command: wget -O {{letsencrypt_binary}} https://dl.eff.org/certbot-auto
+  args:
+    creates: "{{letsencrypt_binary}}"
+  when: letsencrypt_use_certbot_auto
+
+- name: download certbot-auto
+  file:
+    path: "{{letsencrypt_binary}}"
+    mode: "0755"
+  when: letsencrypt_use_certbot_auto
+
 - name: create directory
   sudo: True
   file: >
@@ -42,7 +54,7 @@
   changed_when: >
     not (certonly_result.stdout == '' and certonly_result.stderr == '')
   command: >
-    letsencrypt certonly --non-interactive
+    {{letsencrypt_binary}} certonly --non-interactive
     --email {{letsencrypt_email}}
     {{letsencrypt_agree_tos}}
     --webroot
