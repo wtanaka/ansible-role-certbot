@@ -45,19 +45,32 @@ Or you can include just the role, and configure it in
     - wtanaka.com
     - www.wtanaka.com
 
+### `letsencrypt_fake_key`
+
+Set to `True` in order to disable executing certbot and install a
+self-signed key in each of the `letsencrypt_domains` directories.
+Nothing will be installed if `letsencrypt_domains` is empty
+
+For example, this could be used in an integration test environment or
+in a testing or staging environment.
+
 ### `letsencrypt_domains`
 
-To disable executing certbot, for example in an integration test
-environment, set `letsencrypt_domains` to the empty array, like:
+This is a list of domain names to pass to certbot.
+
+Example:
+
+```
+letsencrypt_domains:
+- wtanaka.com
+- www.wtanaka.com
+```
+
+Setting this to an empty list will disable executing certbot:
 
 ```
 letsencrypt_domains: []
 ```
-
-### `letsencrypt_fake_key`
-
-Set to `True` in order to install a self-signed key in
-`/etc/letsencrypt/fake-server.{crt,key}`
 
 License
 -------
