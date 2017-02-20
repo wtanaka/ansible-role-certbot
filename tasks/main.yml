@@ -94,7 +94,7 @@
 - name: renew certificates
   sudo: True
   command: >
-    letsencrypt renew --non-interactive
+    {{letsencrypt_binary}} renew --non-interactive
     {{letsencrypt_renew_by_default | default("")}}
     --email {{letsencrypt_email}}
   register: renew_result
