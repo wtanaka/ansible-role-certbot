@@ -50,7 +50,7 @@
   with_items: "{{letsencrypt_domains}}"
 
 # for use in integration test environments
-- name: copy fake key
+- name: copy fake fullchain.pem
   sudo: True
   when: >
     letsencrypt_fake_key is defined and letsencrypt_fake_key and
@@ -61,7 +61,18 @@
   with_items: "{{letsencrypt_domains}}"
 
 # for use in integration test environments
-- name: copy fake key
+- name: copy fake chain.pem
+  sudo: True
+  when: >
+    letsencrypt_fake_key is defined and letsencrypt_fake_key and
+    letsencrypt_domains and letsencrypt_domains|length > 0
+  copy:
+    src: server.crt
+    dest: /etc/letsencrypt/live/{{item}}/chain.pem
+  with_items: "{{letsencrypt_domains}}"
+
+# for use in integration test environments
+- name: copy fake privkey.pem
   sudo: True
   when: >
     letsencrypt_fake_key is defined and letsencrypt_fake_key and
