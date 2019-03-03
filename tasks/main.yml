@@ -1,15 +1,15 @@
 ---
-- include: compat.yml
+- name: check for short-circuit
+  raw: "> /dev/null command -v {{letsencrypt_binary}};"
+  register: installed
+  ignore_errors: True
+  changed_when: False
+
+- name: set should_run fact
+  set_fact:
+    should_run: "{{installed|failed or not letsencrypt_should_shortcircuit}}"
 
 - include: include_vars.yml
-
-- include: Debian.yml
-  when: ansible_os_family == 'Debian'
-
-- include: RedHat.yml
-  when: ansible_os_family == 'RedHat'
-
-- include: install_package_names.yml
 
 - name: download certbot-auto
   command: wget -O {{letsencrypt_binary}} https://dl.eff.org/certbot-auto
@@ -23,97 +23,4 @@
     mode: "0755"
   when: letsencrypt_use_certbot_auto
 
-- name: create directory
-  sudo: True
-  file: >
-    path=/etc/letsencrypt
-    state=directory
-
-- name: create directory
-  sudo: True
-  file: >
-    path=/etc/letsencrypt/live
-    state=directory
-    mode=0700
-  when: >
-    letsencrypt_fake_key is defined and letsencrypt_fake_key and
-    letsencrypt_domains and letsencrypt_domains|length > 0
-
-- name: create directories
-  sudo: True
-  file: >
-    path=/etc/letsencrypt/live/{{item}}
-    state=directory
-  when: >
-    letsencrypt_fake_key is defined and letsencrypt_fake_key and
-    letsencrypt_domains and letsencrypt_domains|length > 0
-  with_items: "{{letsencrypt_domains}}"
-
-# for use in integration test environments
-- name: copy fake fullchain.pem
-  sudo: True
-  when: >
-    letsencrypt_fake_key is defined and letsencrypt_fake_key and
-    letsencrypt_domains and letsencrypt_domains|length > 0
-  copy:
-    src: server.crt
-    dest: /etc/letsencrypt/live/{{item}}/fullchain.pem
-  with_items: "{{letsencrypt_domains}}"
-
-# for use in integration test environments
-- name: copy fake chain.pem
-  sudo: True
-  when: >
-    letsencrypt_fake_key is defined and letsencrypt_fake_key and
-    letsencrypt_domains and letsencrypt_domains|length > 0
-  copy:
-    src: server.crt
-    dest: /etc/letsencrypt/live/{{item}}/chain.pem
-  with_items: "{{letsencrypt_domains}}"
-
-# for use in integration test environments
-- name: copy fake privkey.pem
-  sudo: True
-  when: >
-    letsencrypt_fake_key is defined and letsencrypt_fake_key and
-    letsencrypt_domains and letsencrypt_domains|length > 0
-  copy:
-    src: server.key
-    dest: /etc/letsencrypt/live/{{item}}/privkey.pem
-  with_items: "{{letsencrypt_domains}}"
-
-# Avoid running this in integration tests, because it requires that
-# a webserver is already alive and can serve files from
-# letsencrypt_webroot
-- name: run certbot
-  sudo: True
-  register: certonly_result
-  changed_when: >
-    not (certonly_result.stdout == '' and certonly_result.stderr == '')
-  command: >
-    {{letsencrypt_binary}} certonly --non-interactive
-    --email {{letsencrypt_email}}
-    {{letsencrypt_agree_tos}}
-    --webroot
-    -w {{letsencrypt_webroot}}
-    -d {{letsencrypt_domains | join(" -d ")}}
-  when: >
-    (not (letsencrypt_fake_key is defined and letsencrypt_fake_key) and
-      letsencrypt_domains and letsencrypt_domains|length > 0 and
-      (is_integration_test is not defined or not is_integration_test))
-
-- name: renew certificates
-  sudo: True
-  command: >
-    {{letsencrypt_binary}} renew --non-interactive
-    {{letsencrypt_renew_by_default | default("")}}
-    --email {{letsencrypt_email}}
-  register: renew_result
-  changed_when: >
-    'No renewals were attempted' not in renew_result.stdout
-  when: >
-    (not (letsencrypt_fake_key is defined and letsencrypt_fake_key) and
-      letsencrypt_domains and letsencrypt_domains|length > 0 and
-      (is_integration_test is not defined or not is_integration_test))
-  notify:
-  - reload webserver
+- include: sudoorbecome.yml
