@@ -45,6 +45,13 @@ Or you can include just the role, and configure it in
     - wtanaka.com
     - www.wtanaka.com
 
+### `letsencrypt_should_shortcircuit`
+
+Default: True
+
+When True, this role short-circuits itself if
+``{{letsencrypt_binary}}`` is already in the path
+
 ### `letsencrypt_fake_key`
 
 Set to `True` in order to disable executing certbot and install a

@@ -1,4 +1,5 @@
 ---
+letsencrypt_should_shortcircuit: True
 # letsencrypt_agree_tos: --agree-tos
 letsencrypt_email: example@example.com
 # letsencrypt_fake_key: True
